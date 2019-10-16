@@ -12,38 +12,39 @@ class Player          #paramétrer le compte
   end
 
   def show_state
-    puts "#{@name} a #{@life_points} points de vie"
+    puts "#{@name} a #{@life_points} points de vie" # say how many points of life you have
   end
 
-  def gets_damage(damage)
-    @damage = damage
-    @life_points = @life_points - @damage
-      if @life_points < 1
-      then puts "le joueur #{name} est mort"
-           puts "le joueur #{name} a 0 points de vie"
-      else puts "le joueur #{name} subit 5 points de dommage, il lui reste #{life_points} points de vie"
-      end
+  def gets_damage (damage)
+      @life_points = @life_points - damage            # calculate life points
+        if @life_points < 1
+          then puts "le joueur #{name} est trop fatigué!"     # warranty players when dead
+        end
   end
 
   def attacks (player_attacked)
-      attacks_damages_points = compute_damage
-      puts "Passons à la phase d'attaque : Le joueur #{@name} attaque le joueur #{player_attacked.name}"
-      puts "il lui inflige #{attacks_damages_points} points de dommages !"
-      player_attacked.gets_damages(attacks_damages_points)
+      if @life_points >0 && player_attacked.life_points>0  #verify gamers still alives
+        then attacks_damages_points = compute_damage       #calculate the life points lost
+        puts "Passons à la phase de corps à corps : Le joueur #{@name} fouette le joueur #{player_attacked.name}"
+        puts "il lui inflige #{attacks_damages_points} points de fesses rouges !"
+        player_attacked.gets_damage(attacks_damages_points)    #apply method gets_damage = calculate how many life points stayed
+        player_attacked.show_state #player attacket keep ** life points
+      else "game over ! Tout le monde se rhabille"
+      end
   end
 
-  def compute_damage
-  return rand(1..6)
+  def compute_damage          #random fonction to estimate the number of life points damage
+    return rand(1..6)
+  end
+
+
+binding.pry                 #gem pry. debug tool. stop the code where you want to test it.
 end
 
-
-binding.pry
-end
-
-def perform
-initialize
-how_state
-gets_damage(damage)
-attacks (player_attacked)
-compute_damage
+def perform                     #declaration of method. not necessary to run the code.
+  initialize
+  how_state
+  gets_damage (damage)
+  attacks (player_attacked)
+  compute_damage
 end
